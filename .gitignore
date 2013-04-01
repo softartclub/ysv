@@ -1,0 +1,10 @@
+*.log
+assets/
+upload
+excel
+logs/
+back-ups/
+nbproject/
+sql/
+tiny_*
+img
