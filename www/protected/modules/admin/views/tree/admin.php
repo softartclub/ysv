@@ -13,6 +13,9 @@
         display:block;
 
     }
+    .draggable-handle {
+        cursor:move;
+    }
 
 </style>
 
@@ -38,7 +41,7 @@
             return false;
         });
 
-
+        
     });
 
 </script>
@@ -101,7 +104,7 @@ $this->widget('ext.QTreeGridView.CQTreeGridView', array(
     'ajaxUpdate' => false,
    
     'columns' => array(
-     
+   
 
         array(
             'name'=>'name',
@@ -122,9 +125,17 @@ $this->widget('ext.QTreeGridView.CQTreeGridView', array(
          */
         array(
             'class' => 'CButtonColumn',
-            
+            'htmlOptions'=>array('width'=>80, 'align'=>'center'),
+            'template'=>'{draggable} {view} {update} {delete}',
             'buttons'=>array(
-                
+                'draggable' => array(
+                    'label' => 'Переместить',
+                    'imageUrl' => Yii::app()->theme->baseUrl.'/images/draggable.png', // если вы не используете темы измените путь
+                    'url'   => '',
+                    'options' => array('class'=>'draggable-handle'),
+                     'visible'=>'!empty($data["url"])',
+                    
+                ),
                 'update'=>array(
                      'visible'=>'!empty($data["url"])'
                 ),

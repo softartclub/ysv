@@ -19,7 +19,7 @@ class AdminController extends Controller
     public $img;
     public $imgDir = 'pages';
     public $layout = '//layouts/column1';
-    protected $_horisontalMenu = array();
+  
 
     public function __construct($id, $module = null)
     {
@@ -85,7 +85,7 @@ class AdminController extends Controller
               'users' => array('@'),
               ), */
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete', 'create', 'update', 'index', 'view', 'dellpic', 'show', 'settings'),
+                'actions' => array('admin', 'postOnly + delete', 'create', 'update', 'index', 'view', 'dellpic', 'show', 'settings', 'moveNode', 'accessControl'),
                 'users' => array('admin'),
             ),
             array('deny', // deny all users

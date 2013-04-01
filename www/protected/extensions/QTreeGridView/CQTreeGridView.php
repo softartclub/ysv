@@ -109,19 +109,21 @@ class CQTreeGridView extends CGridView
             ');
 
         $cs->registerScript('draganddrop', '
-            $(document).ready(function()  {
-               $("#' . $this->getId() . ' .items tr.initialized").draggable({
+            $(document).ready(function()  { 
+               $("#' . $this->getId() . ' .items tr.initialized ").draggable({
+                   handle: "a.draggable-handle",
                   helper: "clone",
                   opacity: .75,
                   refreshPositions: true, // Performance?
                   revert: "invalid",
                   revertDuration: 300,
-                  scroll: true
+                  scroll: true,
+                  cursor:"crosshair"
                 });
 
                 $("#' . $this->getId() . ' .items tr.initialized, #' . $this->getId() . ' .items tr.before, #' . $this->getId() . ' .items tr.after").droppable({
                     accept: ".initialized",
-                    drop: function(e, ui) {
+                    drop: function(e, ui) { 
                       // Call jQuery treeTable plugin to move the branch
                       //$(ui.draggable).appendBranchTo(this);
                       if($(this).hasClass("initialized")) {

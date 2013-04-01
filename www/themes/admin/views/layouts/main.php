@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -22,13 +22,15 @@
 
         <link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.1.custom/css/redmond/jquery-ui-1.10.1.custom.min.css" />
 
-        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
-        <script src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js"></script>
-
+       
 
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-    </head>
+         <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.2.custom/js/jquery-1.9.1.js"></script>
+        <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
 
+       
+    </head>
+   
     <body>
 
         <div class="container" id="page">

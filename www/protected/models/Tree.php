@@ -37,7 +37,10 @@ class Tree extends CActiveRecord
     
     public function relations()
     {
-        return array('pages'=>array(self::HAS_ONE, 'Pages','', 'on'=>'pages.id=t.pageId'));
+        return array(
+            'pages'=>array(self::HAS_ONE, 'Pages','', 'on'=>'pages.id=t.pageId'),
+            'news'=>array(self::HAS_ONE, 'News','', 'on'=>'news.id=t.pageId'),
+            );
         
     }
 }

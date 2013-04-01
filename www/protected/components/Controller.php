@@ -12,6 +12,7 @@ class Controller extends CController
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
     public $layout = '//layouts/column2';
+    protected $_horisontalMenu = array();
 
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
@@ -33,15 +34,12 @@ class Controller extends CController
     public function __construct($id, $module = null)
     {
         parent::__construct($id, $module);
-       
-        
     }
-    
+
     public function init()
     {
-        
+
         Yii::app()->init;
-        
     }
 
     protected function _breadcrumbsInit($url)
@@ -51,15 +49,15 @@ class Controller extends CController
 
         $controllerId = Yii::app()->controller->id;
         $controllerName = Yii::t('interface', $controllerId);
-      
-      //  $retArray[$controllerName] = $controllerId;
+
+        //  $retArray[$controllerName] = $controllerId;
         $root = Tree::model()->find('url=:url', array(':url' => $url));
         $category = $root->ancestors()->findAll();
         foreach ($category as $value) {
             if (!empty($value['url']))
-                $retArray[$value['name']] = array('/page/'. $value['url']);
+                $retArray[$value['name']] = array('/page/' . $value['url']);
         }
-        
+
         $this->breadcrumbs = $retArray;
     }
 

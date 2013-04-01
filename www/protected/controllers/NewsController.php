@@ -3,7 +3,7 @@
 class NewsController extends Controller
 {
     
-    public $newsSize = 10;
+    public $pageSize = 10;
     public function init()
     {
         
@@ -16,48 +16,49 @@ class NewsController extends Controller
         $newsList = News::model()->findAll($criteria);
         $this->render('index', array('newsList'=>$newsList));
     }
-
-    public function actionView($url)
+    
+      public function actionView($url)
     {
         $this->_breadcrumbsInit($url);
        
-        $news = News::model()->find('url=:url', array(':url'=>$url));
+        $page = News::model()->find('url=:url', array(':url'=>$url));
         
-        if (empty($news))
+        if (empty($page))
             throw new CHttpException("Страница $url не найдена", 404);
         
-      //  $parentPages = News::model->findAll(); 
+      //  $parentPages = Pages::model->findAll(); 
         
-        $this->title = $news->title;
-        $this->keywords = $news->keywords;
-        $this->description = $news->description;
-        $this->header = $news->header;
-        $this->breadcrumbs[] = $news->name;
+        $this->title = $page->title;
+        $this->keywords = $page->keywords;
+        $this->description = $page->description;
+        $this->header = $page->header;
+        $this->breadcrumbs[] = $page->name;
       
-        $menuElement = Tree::model()->find('pageId=:pageId', array(':pageId'=>$news->id));
+        $menuElement = Tree::model()->find('pageId=:pageId', array(':pageId'=>$page->id));
         $criteria = new CDbCriteria();
         $criteria->limit = "5";
-        $criteria->condition = "isShow='1' AND isTopOnSections='1'";
+        $criteria->condition = "`news`.isShow='1' AND isTopOnSections='1'";
          
-        $topItems = $menuElement->with('pages')->descendants()->findAll($criteria);
+        $topItems = $menuElement->with('news')->parent()->findAll($criteria);
         
         $criteria = new CDbCriteria();
-        $criteria->condition = "isShow='1' AND isTopOnSections='0'";
-        $count = $menuElement->with('pages')->descendants()->count($criteria);
+        $criteria->condition = "`news`.isShow='1' AND isTopOnSections='0'";
+        $count = $menuElement->with('news')->descendants()->count($criteria);
 
         $paggination=new CPagination($count);
-        $paggination->pageSize = $this->newsSize;
+        $paggination->pageSize = $this->pageSize;
         $paggination->applyLimit($criteria);
         
         
-        $subItems = $menuElement->with('pages')->descendants()->findAll($criteria);
+        $subItems = $menuElement->with('news')->children()->findAll($criteria);
        
         $this->render('view', array(
-            'news'=>$news,
+            'news'=>$page,
             'topItems'=>$topItems,
             'subItems'=>$subItems,
             'paggination'=>$paggination
             ));
     }
+
 
 }
