@@ -54,8 +54,12 @@ class Controller extends CController
         $root = Tree::model()->find('url=:url', array(':url' => $url));
         $category = $root->ancestors()->findAll();
         foreach ($category as $value) {
-            if (!empty($value['url']))
-                $retArray[$value['name']] = array('/page/' . $value['url']);
+            
+            if (!empty($value->url)) {
+                if (in_array($value->url, array('v_menu', 'h_menu')))
+                        $value->url = '';
+                $retArray[$value->name] = array('/'.$value->controller.'/' . $value->url);
+            }
         }
 
         $this->breadcrumbs = $retArray;
