@@ -1,9 +1,4 @@
 *.log
 .gitignore
-upload
-excel
-logs/
 back-ups/
 nbproject/
-sql/
-tiny_*
