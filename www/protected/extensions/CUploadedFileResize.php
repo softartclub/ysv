@@ -14,7 +14,7 @@ class CUploadedFileResize //extends CUploadedFile
 {
 
     public $maxExecuttionTime = 60;
-    public $stampPath;
+    public $watermark;
     public $baseDir;
     public $width;
     public $height;
@@ -71,12 +71,12 @@ class CUploadedFileResize //extends CUploadedFile
         $to = preg_replace('/\0/uis', '', $to);
 
         $stamp = null;
-
-        if (!empty($this->stampPath)) {
-            if (is_file($this->stampPath)) {
-                $stamp = imagecreatefrompng($this->stampPath);
-            } elseif (is_file($this->baseDir . $this->stampPath)) {
-                $stamp = imagecreatefrompng($this->baseDir . $this->stampPath);
+      
+        if (!empty($this->watermark)) {
+            if (is_file($this->watermark)) {
+                $stamp = imagecreatefrompng($this->watermark);
+            } elseif (is_file($this->baseDir . $this->watermark)) {
+                $stamp = imagecreatefrompng($this->baseDir . $this->watermark);
             }
         }
 

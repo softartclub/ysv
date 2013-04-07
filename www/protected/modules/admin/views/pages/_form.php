@@ -17,18 +17,21 @@ $this->widget('application.widgets.datepicker.DatePicker');
         'id' => 'pages-form',
         'enableAjaxValidation' => false,
         'htmlOptions' => array('enctype' => 'multipart/form-data')
-            ));
+    ));
     ?>
 
     <p class="note"><?php echo Yii::t('interface', 'Fields with'); ?> <span class="required">*</span> <?php echo Yii::t('interface', 'are required.'); ?> </p>
 
     <?php echo $form->errorSummary($model); ?>
 
-    <div class="row">
-        <?php echo $form->labelEx($tree, 'level'); ?>
-        <?php echo $form->dropDownList($tree, 'level', $treeList, array('name' => 'Tree[tree]', 'options' => $treeSelected)); ?>
-        <?php echo $form->error($tree, 'level'); ?>
-    </div>
+    <?php if (!empty($treeList) ): ?>
+        <div class="row">
+            
+            <?php echo $form->labelEx($tree, 'level'); ?>
+            <?php echo $form->dropDownList($tree, 'level', $treeList, array('name' => 'Tree[tree]', 'options' => $treeSelected)); ?>
+            <?php echo $form->error($tree, 'level'); ?>
+        </div>
+    <?php endif; ?>
 
     <div class="row">
         <?php echo $form->labelEx($model, 'name'); ?>
@@ -38,98 +41,105 @@ $this->widget('application.widgets.datepicker.DatePicker');
     </div>
     <div class="row">
         <?php echo $form->labelEx($model, 'pic'); ?>
-        
-        <?php if (is_file($_SERVER['DOCUMENT_ROOT'].$img['small']['path'].$model->pic)):?>
-            <img src="<?php echo $img['small']['path'].$model->pic?>" /> <br />
-            <a href="/admin/<?php echo Yii::app()->controller->id?>/dellpic/id/<?php echo $model->id;?>" onclick="return confirm('<?php echo Yii::t('form', 'Remove this image?');?>');">
-            <?php echo Yii::t('form', 'Delete picture');?>
-            </a>
-        <?php endif;?>
-        
+
+        <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . $img['small']['path'] . $model->pic)): ?>
+            <?php echo CHtml::image($img['small']['path'] . $model->pic, $model->name, array('align' => 'left', 'style' => 'border: 1px solid; margin-right: 10px;')); ?>
+            <br /> <br /> 
+            <?php
+            echo CHtml::link(Yii::t('form', 'Delete picture'), array(
+                '/admin/' . Yii::app()->controller->id . '/dellpic/id/' . $model->id
+                    ), array(
+                'onclick' => 'return confirm("' . Yii::t('form', 'Remove this image?') . '");'
+            ));
+            ?>  
+        <?php endif; ?>
+             <br /> <br /> 
+
         <?php echo $form->fileField($model, 'pic'); ?>
         <?php echo $form->error($model, 'pic'); ?>
     </div>
-    
+    <div style="clear: both;"></div>
     <div class="row">
-        <?php echo $form->labelEx($model, 'date'); ?>
-        <?php echo $form->textField($model, 'date', array('id'=>'datepicker')); ?>
+<?php echo $form->labelEx($model, 'date'); ?>
+        <?php echo $form->textField($model, 'date', array('id' => 'datepicker')); ?>
         <?php echo $form->error($model, 'date'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'url'); ?>
+<?php echo $form->labelEx($model, 'url'); ?>
         <?php echo $form->textField($model, 'url', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'url'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'header'); ?>
+<?php echo $form->labelEx($model, 'header'); ?>
         <?php echo $form->textField($model, 'header', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'header'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'title'); ?>
+<?php echo $form->labelEx($model, 'title'); ?>
         <?php echo $form->textField($model, 'title', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'title'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'keywords'); ?>
+<?php echo $form->labelEx($model, 'keywords'); ?>
         <?php echo $form->textField($model, 'keywords', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'keywords'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'description'); ?>
+<?php echo $form->labelEx($model, 'description'); ?>
         <?php echo $form->textField($model, 'description', array('size' => 60, 'maxlength' => 255)); ?>
         <?php echo $form->error($model, 'description'); ?>
     </div>
     <div class="row">
-        <?php echo $form->labelEx($model, 'isShow'); ?>
+<?php echo $form->labelEx($model, 'isShow'); ?>
         <?php echo $form->CheckBox($model, 'isShow'); ?>
         <?php echo $form->error($model, 'isShow'); ?>
     </div>
     <div class="row">
-        <?php echo $form->labelEx($model, 'preview'); ?>
+<?php echo $form->labelEx($model, 'preview'); ?>
         <?php echo $form->textArea($model, 'preview', array('rows' => 6, 'cols' => 50, 'class' => 'ckeditor')); ?>
         <?php echo $form->error($model, 'preview'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'body'); ?>
+<?php echo $form->labelEx($model, 'body'); ?>
         <?php echo $form->textArea($model, 'body', array('rows' => 6, 'cols' => 50, 'class' => 'ckeditor')); ?>
         <?php echo $form->error($model, 'body'); ?>
     </div>
 
-   
+
     <div class="row">
-        <?php echo $form->labelEx($model, 'isMainPage'); ?>
+<?php echo $form->labelEx($model, 'isMainPage'); ?>
         <?php echo $form->CheckBox($model, 'isMainPage'); ?>
         <?php echo $form->error($model, 'isMainPage'); ?>
     </div>
 
     <div class="row">
-        <?php echo $form->labelEx($model, 'onMainList'); ?>
+<?php echo $form->labelEx($model, 'onMainList'); ?>
         <?php echo $form->CheckBox($model, 'onMainList'); ?>
         <?php echo $form->error($model, 'onMainList'); ?>
     </div>
     <div class="row">
-        <?php echo $form->labelEx($model, 'isTopOnMain'); ?>
+<?php echo $form->labelEx($model, 'isTopOnMain'); ?>
         <?php echo $form->CheckBox($model, 'isTopOnMain'); ?>
         <?php echo $form->error($model, 'isTopOnMain'); ?>
     </div>
     <div class="row">
-        <?php echo $form->labelEx($model, 'isTopOnSections'); ?>
+<?php echo $form->labelEx($model, 'isTopOnSections'); ?>
         <?php echo $form->CheckBox($model, 'isTopOnSections'); ?>
         <?php echo $form->error($model, 'isTopOnSections'); ?>
     </div>
 
 
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('form', 'Create') : Yii::t('form', 'Save')); ?>
+        
+<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('form', 'Create') : Yii::t('form', 'Save')); ?>
     </div>
 
-    <?php $this->endWidget(); ?>
+<?php $this->endWidget(); ?>
 
 </div><!-- form -->

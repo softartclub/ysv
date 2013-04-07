@@ -62,7 +62,7 @@ $form = $this->beginWidget('CActiveForm', array(
     </div>
 
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+       <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('form', 'Create') : Yii::t('form', 'Save')); ?>
     </div>
 
     <?php $this->endWidget(); ?>

@@ -24,11 +24,13 @@ $this->widget('application.widgets.datepicker.DatePicker');
 
     <?php echo $form->errorSummary($model); ?>
 
+    <?php if (!empty($treeList)): ?>
     <div class="row">
         <?php echo $form->labelEx($tree, 'level'); ?>
         <?php echo $form->dropDownList($tree, 'level', $treeList, array('name' => 'Tree[tree]', 'options' => $treeSelected)); ?>
         <?php echo $form->error($tree, 'level'); ?>
     </div>
+    <?php endif;?>
 
     <div class="row">
         <?php echo $form->labelEx($model, 'name'); ?>
@@ -44,7 +46,7 @@ $this->widget('application.widgets.datepicker.DatePicker');
        <br /> <br /> 
         <?php echo CHtml::link(Yii::t('form', 'Delete picture'), 
                 array(
-                    'admin/'.Yii::app()->controller->id.'/dellpic/id/'.$model->id
+                    '/admin/'.Yii::app()->controller->id.'/dellpic/id/'.$model->id
                 ), array(
                    
                     'onclick'=>'return confirm("'.Yii::t('form', 'Remove this image?').'");'

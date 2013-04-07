@@ -16,7 +16,7 @@ class MetaTagsData
     }
 
     protected function _test()
-    { 
+    {
         if (isset($this->_data['name'])) {
 
             $name = $this->_data['name'];
@@ -25,10 +25,9 @@ class MetaTagsData
                 if (empty($this->_data['url'])) {
                     $this->_data['url'] = $name;
                 }
-                
+
                 $translite1 = new Translite();
                 $this->_data['url'] = $translite1->rusencode($this->_data['url']);
-
             }
 
             if (isset($this->_data['header']) && empty($this->_data['header'])) {
@@ -43,23 +42,19 @@ class MetaTagsData
                 $this->_data['keywords'] = $name;
             }
 
-            if (isset($this->_data['description']) && empty($this->_data['description'])) { 
+            if (isset($this->_data['description']) && empty($this->_data['description'])) {
                 $this->_data['description'] = $name;
-               
             }
-            
-            if (isset($this->_data['date']) && empty($this->_data['date'])) { 
-                $this->_data['date'] = date('Y-m-d');               
+
+            if (isset($this->_data['date']) && empty($this->_data['date'])) {
+                $this->_data['date'] = date('Y-m-d');
             }
-          
-            if (isset($this->_data['preview']) && empty($this->_data['preview'])) { 
-                   if (isset($this->_data['body']) && !empty($this->_data['body'])) {
-                    if( ($pos = strpos($this->_data['body'], '</p>'))) {
-                        $preview = substr($this->_data['body'], 0, strpos($this->_data['body'], '</p>')+4);
-                        $this->_data['preview'] = $preview;
-                    }
-                    
-                }  
+
+            if (isset($this->_data['preview']) && empty($this->_data['preview'])) {
+
+                if (isset($this->_data['body']) && !empty($this->_data['body'])) {
+                    $this->_data['preview'] = '<p>' . substr(strip_tags($this->_data['body']), 0, 250) . '</p>';
+                }
             }
         }
     }

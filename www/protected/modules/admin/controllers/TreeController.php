@@ -160,11 +160,7 @@ class TreeController extends AdminController
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
-
-
-
-
-
+        
         $this->render('create', array(
             'model' => $model,
             'modules' => $this->_modules

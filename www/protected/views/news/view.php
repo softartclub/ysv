@@ -2,11 +2,13 @@
 
     <?php foreach ($topItems as $item): ?>
         <div style="margin-top: 10px;">
-            <b><?php echo $item->pages->header; ?></b> | <?php echo $item->pages->date; ?>
+             <b><?php echo CHtml::link($item->news->name, array('/news/'.$item->news->url));?>  </b> | <?php echo $item->news->date; ?>
+          
             <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/news/small/' . $item->news->pic)): ?>
-                <img src="/img/news/small/<?php echo $item->news->pic; ?>" alt="<?php echo $item->news->name; ?>" align="left" />
+                 <?php echo CHtml::link(CHtml::image("/img/news/small/".$item->news->pic, $item->news->name, array('align'=>'left') ), array('/news/'.$item->news->url), array('title'=>$item->name));?>
+           
             <?php endif; ?>
-            <?php echo $item->pages->preview; ?>
+            <?php echo $item->news->preview; ?>
         </div>
 
     <?php endforeach; ?>
@@ -15,7 +17,8 @@
  <h1><?php echo $news->header;?></h1>   
 <?php echo $news->preview; ?>
 <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/news/big/' . $news->pic)): ?>
-    <img src="/img/news/big/<?php echo $news->pic; ?>" alt="<?php echo $news->name; ?>"/>
+     <?php echo CHtml::image("/img/news/big/".$news->pic, $news->name );?>
+           
 <?php endif; ?>
 
 <?php echo $news->body; ?>
@@ -24,9 +27,10 @@
     <?php foreach ($subItems as $item): ?>
 
         <div style="margin-top: 10px;">
-            <b><?php echo $item->news->header; ?></b>
+            <b><?php echo CHtml::link($item->news->header, array('/news/'.$item->news->url));?>  </b> | <?php echo $item->news->date; ?>
             <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/news/small/' . $item->news->pic)): ?>
-                <img src="/img/news/small/<?php echo $item->news->pic; ?>" alt="<?php echo $item->news->name; ?>" align="left" />
+                <?php echo CHtml::link(CHtml::image("/img/news/small/".$item->news->pic, $item->news->name, array('align'=>'left') ), array('/news/'.$item->news->url), array('title'=>$item->name));?>
+             
             <?php endif; ?>
             <?php echo $item->news->preview; ?>
         </div>

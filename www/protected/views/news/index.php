@@ -18,10 +18,11 @@ $this->breadcrumbs = array(
                         <img src="<?php echo '/img/news/small/' . $news->pic; ?>" alt="<?php echo $news->header; ?>" class="img" align="left"/>
                     </a>
                 <?php endif; ?>
-                <h4><?php echo $news->header; ?></h4>
+                <h4><a href="/news/<?php echo $news->url; ?>" title="<?php echo $news->header; ?>" title="<?php echo $news->header; ?>"><?php echo $news->header; ?></a></h4>
                 <p class="p1"><?php echo $news->preview; ?></p>
                 <div class="wrapper"><a href="/news/<?php echo $news->url; ?>" title="<?php echo $news->header; ?>" class="link1"><em><b><?php echo Yii::t('interface', 'Read Mode'); ?></b></em></a></div>
             </div>
         </div>
+<div style="clear:both"></div>
     <?php endforeach; ?>
 <?php endif; ?>

@@ -44,30 +44,11 @@ class PagesController extends AdminController
                 throw new Exception($e->getMessage(), $e->getCode());
             }
 
-            $model->attributes = $metaTagsData1->getData();
- 
+            $model->attributes = $metaTagsData1->getData(); 
            
             if ($model->validate()) {
 
-                $pic = CUploadedFile::getInstance($model, 'pic');
               
-
-                if ($pic) {
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['big']['width'];
-                    $CUploadedFileResize->height = $this->img['big']['height'];
-                    $CUploadedFileResize->saveResize($this->img['big']['path'] . $pic->getName());
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['small']['width'];
-                    $CUploadedFileResize->height = $this->img['small']['height'];
-                    $CUploadedFileResize->saveResize($this->img['small']['path'] . $pic->getName() );
-
-                    $model->pic = $pic->getName() ;
-                }
-
-
 
                 if (Pages::model()->exists('url=:url', array(':url' => $model->attributes['url'])))
                     throw new CHttpException(Yii::t('message', 'Url {url} already exists', array('{url}' => $model->attributes['url'])));
@@ -77,10 +58,10 @@ class PagesController extends AdminController
                 } catch (Exception $e) {
                     throw new CHttpException($e->getMessage());
                 }
+                
+                 $this->_savePic($model);
 
-
-
-                if (is_numeric($_POST['Tree']['tree']) && $_POST['Tree']['tree'] != '0') {
+                if (isset($_POST['Tree']['tree']) && is_numeric($_POST['Tree']['tree']) && $_POST['Tree']['tree'] != '0') {
 
                     $parentMenu = Tree::model()->findByPk($_POST['Tree']['tree']);
                     $menu->name = $model->attributes['name'];
@@ -118,13 +99,7 @@ class PagesController extends AdminController
     {
         $model = $this->loadModel($id);
         $activeElement = Tree::model()->find('pageId=:pageId', array(':pageId' => $model->id));
-        $isElementExists = true;
-        if (!$activeElement) {
-            $activeElement = Tree::model();
-            $isElementExists = false;
-        }
-
-
+       
         if (isset($_POST['Pages'])) {
 
             try {
@@ -135,27 +110,9 @@ class PagesController extends AdminController
 
             $model->attributes = $metaTagsData1->getData();
 
-
-
             if ($model->validate()) {
 
-                $pic = CUploadedFile::getInstance($model, 'pic');
-
-
-                if ($pic) {
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['big']['width'];
-                    $CUploadedFileResize->height = $this->img['big']['height'];
-                    $CUploadedFileResize->saveResize($this->img['big']['path'] . $pic->getName());
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['small']['width'];
-                    $CUploadedFileResize->height = $this->img['small']['height'];
-                    $CUploadedFileResize->saveResize($this->img['small']['path'] . $pic->getName());
-
-                    $model->pic = $pic->getName();
-                }
+                $this->_savePic($model);
 
                 try {
                     $model->save();
@@ -163,7 +120,7 @@ class PagesController extends AdminController
                     throw new CHttpException($e->getMessage());
                 }
 
-                if (is_numeric($_POST['Tree']['tree'])) { 
+                if (isset($_POST['Tree']['tree']) && is_numeric($_POST['Tree']['tree'])) { 
                     
                     $selectedElement = null;
                     
@@ -174,7 +131,7 @@ class PagesController extends AdminController
                             throw new CHttpException($e->getMessage());
                         }
                         
-                        
+                        $isElementExists = $selectedElement->children()->exists('name=:name', array(':name' => $model->name));
 
                         try {
                             if ($isElementExists) {
@@ -197,6 +154,8 @@ class PagesController extends AdminController
                                 $menu->name = $model->attributes['name'];
                                 $menu->pageId = $model->id;
                                 $menu->url = $model->attributes['url'];
+                                $menu->controller = 'page';
+                                $menu->tableName = 'pages';
                                 try {
                                     $menu->appendTo($selectedElement);
                                 } catch (Exception $e) {
@@ -235,7 +194,7 @@ class PagesController extends AdminController
 
         $this->render('update', array(
             'model' => $model,
-            'tree' => $activeElement,
+            'tree' => Tree::model(),
             'treeSelected' => $this->_menuSelected($model->id),
             'treeList' => $this->_menuList(),
             'img' => $this->img
@@ -249,7 +208,17 @@ class PagesController extends AdminController
      */
     public function actionDelete($id)
     {
-        $this->loadModel($id)->delete();
+        
+        $model = $this->loadModel($id);
+         $this->_deletePic($model->pic); 
+        $tree = Tree::model()->find('pageId=:pageId', array(':pageId'=>$model->id));
+        if ($tree)
+            $tree->deleteNode();
+        
+       
+        $model->delete();
+        
+        
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))

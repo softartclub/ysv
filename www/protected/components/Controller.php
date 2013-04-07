@@ -34,11 +34,14 @@ class Controller extends CController
     public function __construct($id, $module = null)
     {
         parent::__construct($id, $module);
+         Yii::app()->getClientScript()->registerCoreScript( 'jquery.ui' );
+        Yii::app()->clientScript->registerCssFile('jquery-ui.min.css');
     }
 
     public function init()
     {
-
+        
+       
         Yii::app()->init;
     }
 
@@ -52,17 +55,19 @@ class Controller extends CController
 
         //  $retArray[$controllerName] = $controllerId;
         $root = Tree::model()->find('url=:url', array(':url' => $url));
-        $category = $root->ancestors()->findAll();
-        foreach ($category as $value) {
-            
-            if (!empty($value->url)) {
-                if (in_array($value->url, array('v_menu', 'h_menu')))
-                        $value->url = '';
-                $retArray[$value->name] = array('/'.$value->controller.'/' . $value->url);
-            }
-        }
+        if ($root) {
+            $category = $root->ancestors()->findAll();
+            foreach ($category as $value) {
 
-        $this->breadcrumbs = $retArray;
+                if (!empty($value->url)) {
+                    if (in_array($value->url, array('v_menu', 'h_menu')))
+                        $value->url = '';
+                    $retArray[$value->name] = array('/' . $value->controller . '/' . $value->url);
+                }
+            }
+
+            $this->breadcrumbs = $retArray;
+        }
     }
 
 }

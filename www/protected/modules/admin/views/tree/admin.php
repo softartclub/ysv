@@ -24,24 +24,24 @@
         $('.tree-show').click(function() {
             var me = $(this);
             if ($(this).is('.hidden'))
-                $.get("/admin/tree/show/id/"+$(this).attr('href')+"/show/1",  function(data){             
+                $.get("/admin/tree/show/id/" + $(this).attr('href') + "/show/1", function(data) {
                     me.removeClass('hidden');
-                }).fail(function(msg){
+                }).fail(function(msg) {
                     alert("Failed: " + msg.status + ": " + msg.statusText);
                 });
-                
+
             else
-                 $.get("/admin/tree/show/id/"+$(this).attr('href')+"/show/0",  function(data){             
+                $.get("/admin/tree/show/id/" + $(this).attr('href') + "/show/0", function(data) {
                     me.addClass('hidden');
-                }).fail(function(msg){
+                }).fail(function(msg) {
                     alert("Failed: " + msg.status + ": " + msg.statusText);
                 });
-                
-   
+
+
             return false;
         });
 
-        
+
     });
 
 </script>
@@ -54,6 +54,7 @@
 /* @var $model tree */
 
 $this->breadcrumbs = array(
+    Yii::t('interface', $this->module->id) => '/admin',
     Yii::t('interface', 'Tree') => array('index'),
     Yii::t('interface', 'Manage'),
 );
@@ -82,17 +83,17 @@ $('.search-form form').submit(function(){
 <h1><?php echo Yii::t('interface', 'Manage trees'); ?></h1>
 
 <p>
-<?php echo Yii::t('interface', 'You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
+    <?php echo Yii::t('interface', 'You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
 or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.'); ?>
 </p>
 
 <?php echo CHtml::link(Yii::t('interface', 'Advanced Search'), '#', array('class' => 'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php
-$this->renderPartial('_search', array(
-    'model' => $model,
-));
-?>
+    <?php
+    $this->renderPartial('_search', array(
+        'model' => $model,
+    ));
+    ?>
 </div><!-- search-form -->
 <?php
 ?>
@@ -100,24 +101,18 @@ $this->renderPartial('_search', array(
 $this->widget('ext.QTreeGridView.CQTreeGridView', array(
     'id' => 'tree-grid',
     'dataProvider' => $model->search(),
-
     'ajaxUpdate' => false,
-   
     'columns' => array(
-   
-
         array(
-            'name'=>'name',
-            'value'=>'Yii::t("interface", $data["name"])'
-            ),
-     //   'url',
+            'name' => 'name',
+            'value' => 'Yii::t("interface", $data["name"])'
+        ),
+        //   'url',
         array(
             'name' => 'isShow',
             'type' => 'html',
             'value' => 'CHtml::link("","$data[id]", array("onclick"=>"return false", "class"=>"tree-show". ($data["isShow"] != "1" ? " hidden" : "")))',
-            'htmlOptions'=>array('style'=>'text-align: center; width:50px;', 'align'=>'center'),
-            
-        
+            'htmlOptions' => array('style' => 'text-align: center; width:50px;', 'align' => 'center'),
         ),
         /*
           'controller',
@@ -125,30 +120,26 @@ $this->widget('ext.QTreeGridView.CQTreeGridView', array(
          */
         array(
             'class' => 'CButtonColumn',
-            'htmlOptions'=>array('width'=>80, 'align'=>'center'),
-            'template'=>'{draggable} {view} {update} {delete}',
-            'buttons'=>array(
+            'htmlOptions' => array('width' => 80, 'align' => 'center'),
+            'template' => '{draggable} {view} {update} {delete}',
+            'buttons' => array(
                 'draggable' => array(
                     'label' => 'Переместить',
-                    'imageUrl' => Yii::app()->theme->baseUrl.'/images/draggable.png', // если вы не используете темы измените путь
-                    'url'   => '',
-                    'options' => array('class'=>'draggable-handle'),
-                     'visible'=>'!empty($data["url"])',
-                    
+                    'imageUrl' => Yii::app()->theme->baseUrl . '/images/draggable.png', // если вы не используете темы измените путь
+                    'url' => '',
+                    'options' => array('class' => 'draggable-handle'),
+                    'visible' => '!empty($data["url"])',
                 ),
-                'update'=>array(
-                     'visible'=>'!empty($data["url"])'
+                'update' => array(
+                    'visible' => '!empty($data["url"])'
                 ),
-                'delete'=>array(
-                     'visible'=>'!empty($data["url"])'
+                'delete' => array(
+                    'visible' => '!empty($data["url"])'
                 ),
-               
-                'view'=>array(
-                     'visible'=>'!empty($data["url"])'
+                'view' => array(
+                    'visible' => '!empty($data["url"])'
                 ),
-               
-                ///!in_array($data["url"], array("", "h_menu", "v_menu"))
-                
+            ///!in_array($data["url"], array("", "h_menu", "v_menu"))
             )
         ),
     ),

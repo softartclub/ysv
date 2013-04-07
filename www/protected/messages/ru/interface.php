@@ -52,6 +52,14 @@ or <b>=</b>) в начале каждого из значений поиска, 
     '<p class="note">Fields with <span class="required">*</span> are required.</p>'=>'Поля отмеченные <span class="required">*</span> обязательные для заполнения.</p>',
     
     "Are you sure you want to delete this item?"=>"Удалить эту запись?",
+    "Top news"=>'Топ новости',
+    "Top pages"=>'Топ статей',
+    "Last news"=>'Последние новости',
+    "Last pages"=>'Последние статьи',
+    "Sitemap"=>'Карта сайта',
+    "About"=>'О сайте',
+    "Contact"=>'Контакты',
+    
     
     "Jan"=>'Январь',
     "Feb"=>'Февраль',

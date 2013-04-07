@@ -21,41 +21,80 @@ class SiteController extends Controller
             ),
         );
     }
-    
+
     public function actionTestmenu()
     {
-        $this->render('testmenu'); 
+        $this->render('testmenu');
     }
 
     /**
      * This is the default 'index' action that is invoked
      * when an action is not explicitly requested by users.
      */
-    
-    
     public function actionIndex()
     {
+        // top news
         $criteria = new CDbCriteria();
-        $criteria->condition = " isShow=:isShow AND (isShow=:isShow OR isTopOnMain=:isTopOnMain OR onMainList=:onMainList)";
-        $criteria->params = array(':isShow' => '1', ':isTopOnMain'=>'1', ':onMainList'=>'1');
-        $criteria->order = "position, date";        
-        $mainNews = News::model()->findAll($criteria);
-        
+        $criteria->condition = "isShow=:isShow AND isTopOnMain=:isTopOnMain";
+        $criteria->params = array(':isShow' => '1', ':isTopOnMain' => '1');
+        $criteria->order = "`t`.`date`, `t`.`id` DESC";
+        $criteria->limit = 10;
+        $mainTopNews = News::model()->findAll($criteria);
+        // last news
         $criteria = new CDbCriteria();
-        $criteria->condition = " isShow=:isShow AND (isMainPage=:isMainPage OR isMainPage=:isMainPage OR isTopOnMain=:isTopOnMain OR onMainList=:onMainList)";
-        $criteria->params = array(':isMainPage' => '1', ':isShow' => '1', ':isTopOnMain'=>'1', ':onMainList'=>'1');
-        $criteria->order = "position, date";
-        
+        $criteria->condition = " isShow=:isShow AND  onMainList=:onMainList";
+        $criteria->params = array(':isShow' => '1', ':onMainList' => '1');
+        $criteria->order = "`t`.`date`, `t`.`id` DESC";
+        $criteria->limit = 10;
+        $mainLastNews = News::model()->findAll($criteria);
+
+        //top pages
+        $criteria = new CDbCriteria();
+        $criteria->condition = "isShow=:isShow AND isTopOnMain=:isTopOnMain";
+        $criteria->params = array(':isShow' => '1', ':isTopOnMain' => '1');
+        $criteria->order = "`t`.`date`, `t`.`id` DESC";
+        $criteria->limit = 10;
+        $mainTopPages = Pages::model()->findAll($criteria);
+
+        // last pages
+        $criteria = new CDbCriteria();
+        $criteria->condition = " isShow=:isShow AND  onMainList=:onMainList";
+        $criteria->params = array(':isShow' => '1', ':onMainList' => '1');
+        $criteria->order = "`t`.`date`, `t`.`id` DESC";
+        $criteria->limit = 10;
+        $mainLastPages = Pages::model()->findAll($criteria);
+
+
+        //main pages
+
+        $criteria = new CDbCriteria();
+        $criteria->condition = " isShow=:isShow AND isMainPage=:isMainPage";
+        $criteria->params = array(':isMainPage' => '1', ':isShow' => '1');
+        $criteria->order = "`t`.`date`, `t`.`id` DESC";
+        $criteria->limit = 10;
+
         $mainPages = Pages::model()->findAll($criteria);
         if (!empty($mainPages) && $mainPages[0]->isMainPage == '1') {
+
             $this->title = $mainPages[0]->title;
             $this->keywords = $mainPages[0]->keywords;
             $this->description = $mainPages[0]->description;
             $this->header = $mainPages[0]->header;
-          
+
+            Yii::app()->clientScript->registerMetaTag($this->title, 'title');
+            Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
+            Yii::app()->clientScript->registerMetaTag($this->description, 'description');
+            $this->pageTitle = $this->title;
         }
-        
-        $this->render('index', array('mainPages' => $mainPages, 'mainNews'=>$mainNews));
+
+        $this->render('index', array(
+            'mainPages' => $mainPages,
+            'mainTopPages' => $mainTopPages,
+            'mainLastPages' => $mainLastPages,
+            'mainTopPages' => $mainTopPages,
+            'mainTopNews' => $mainTopNews,
+            'mainLastNews' => $mainLastNews,
+        ));
     }
 
     /**
@@ -88,7 +127,7 @@ class SiteController extends Controller
                         "Content-type: text/plain; charset=UTF-8";
 
                 mail(Yii::app()->params['adminEmail'], $subject, $model->body, $headers);
-                Yii::app()->user->setFlash('contact', 'Thank you for contacting us. We will respond to you as soon as possible.');
+                Yii::app()->user->setFlash('contact', Yii::t('message', 'Thank you for contacting us. We will respond to you as soon as possible.'));
                 $this->refresh();
             }
         }
@@ -126,6 +165,13 @@ class SiteController extends Controller
     {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
+    }
+
+    public function actionSitemap()
+    {
+        $data = array();
+        
+        $this->render('sitemap', array('data' => $data));
     }
 
 }

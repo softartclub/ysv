@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 31 2013 г., 14:10
+-- Время создания: Апр 07 2013 г., 10:49
 -- Версия сервера: 5.5.29-MariaDB-log
 -- Версия PHP: 5.3.17
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `author` smallint(5) unsigned NOT NULL DEFAULT '0',
   `position` int(11) NOT NULL DEFAULT '9999',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -73,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `pages` (
   `author` smallint(5) unsigned NOT NULL DEFAULT '0',
   `position` int(11) NOT NULL DEFAULT '9999',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `tree` (
   KEY `lft` (`lft`),
   KEY `rgt` (`rgt`),
   KEY `level` (`level`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

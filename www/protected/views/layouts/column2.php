@@ -3,7 +3,7 @@
 
 <div class="span-5 last">
 	<div id="sidebar">
-	<?php  $this->widget('application.widgets.menu.VMenu', array(
+	<?php  $this->widget('application.widgets.menu.SiteMenu', array(
             'htmlOptions'=>array( 'class'=>'v_menu_left')
                )); ?>
 	</div><!-- sidebar -->

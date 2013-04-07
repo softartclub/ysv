@@ -11,7 +11,8 @@
     <div style="float:left;">
        
         <?php echo CHtml::link(Yii::t('interface', 'Update'), array('update', 'id'=>$data->id) ); ?> | 
-        <?php echo CHtml::link(Yii::t('interface', 'Delete'), array('delete', 'id'=>$data->id), array('onclick'=>'return confirm("'.Yii::t('interface', 'Are you sure you want to delete this item?').'");') ); ?>
+        <?php echo CHtml::link(Yii::t('interface', 'Delete'), '#', array('submit'=>array('delete','id'=>$data->id),'confirm'=>Yii::t('interface', 'Are you sure you want to delete this item?')) ); ?> 
+    
         <br />
         <br />
         
@@ -42,9 +43,9 @@
         <br />
     </div>
 
-    <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/pages/small/' . $data->pic)): ?>
+    <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/news/small/' . $data->pic)): ?>
         <div style="float: right; border: 1px solid;">
-             <?php echo CHtml::image('/img/pages/small/' . $data->pic, $data->name); ?>
+             <?php echo CHtml::image('/img/news/small/' . $data->pic, $data->name); ?>
         </div>
     <?php endif; ?>
 

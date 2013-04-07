@@ -2,9 +2,10 @@
 
     <?php foreach ($topItems as $item): ?>
         <div style="margin-top: 10px;">
-            <b><?php echo $item->pages->header; ?></b> | <?php echo $item->pages->date; ?>
+             <b><?php echo CHtml::link($item->pages->header, array('/pages/' . $item->pages->url)); ?>  </b> | <?php echo $item->pages->date; ?>
             <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/pages/small/' . $item->pages->pic)): ?>
-                <img src="/img/pages/small/<?php echo $item->pages->pic; ?>" alt="<?php echo $item->pages->name; ?>" align="left" />
+                <?php echo CHtml::link(CHtml::image("/img/pages/small/" . $item->pages->pic, $item->pages->name, array('align' => 'left')), array('/pages/' . $item->pages->url), array('title' => $item->name)); ?>
+
             <?php endif; ?>
             <?php echo $item->pages->preview; ?>
         </div>
@@ -12,7 +13,7 @@
     <?php endforeach; ?>
     <hr>
 <?php endif; ?>
- <h1><?php echo $page->header;?></h1>   
+<h1><?php echo $page->header; ?></h1>   
 <?php echo $page->preview; ?>
 <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/pages/big/' . $page->pic)): ?>
     <img src="/img/pages/big/<?php echo $page->pic; ?>" alt="<?php echo $page->name; ?>"/>
@@ -24,9 +25,11 @@
     <?php foreach ($subItems as $item): ?>
 
         <div style="margin-top: 10px;">
-            <b><?php echo $item->pages->header; ?></b>
+
+            <b><?php echo CHtml::link($item->pages->header, array('/pages/' . $item->pages->url)); ?>  </b> | <?php echo $item->pages->date; ?>
             <?php if (is_file($_SERVER['DOCUMENT_ROOT'] . '/img/pages/small/' . $item->pages->pic)): ?>
-                <img src="/img/pages/small/<?php echo $item->pages->pic; ?>" alt="<?php echo $item->pages->name; ?>" align="left" />
+                <?php echo CHtml::link(CHtml::image("/img/pages/small/" . $item->pages->pic, $item->pages->name, array('align' => 'left')), array('/pages/' . $item->pages->url), array('title' => $item->name)); ?>
+
             <?php endif; ?>
             <?php echo $item->pages->preview; ?>
         </div>

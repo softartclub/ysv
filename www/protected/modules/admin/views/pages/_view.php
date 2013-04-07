@@ -9,8 +9,8 @@
 <div class="view">
 
     <div style="float:left;">
-          <?php echo CHtml::link(Yii::t('interface', 'Update'), array('update', 'id'=>$data->id) ); ?> | 
-        <?php echo CHtml::link(Yii::t('interface', 'Delete'), array('delete', 'id'=>$data->id), array('onclick'=>'return confirm("'.Yii::t('interface', 'Are you sure you want to delete this item?').'");') ); ?>
+          <?php echo CHtml::link(Yii::t('interface', 'Update'), array('update', 'id'=>$data->id) ); ?> |
+          <?php echo CHtml::link(Yii::t('interface', 'Delete'), '#', array('submit'=>array('delete','id'=>$data->id),'confirm'=>Yii::t('interface', 'Are you sure you want to delete this item?')) ); ?> 
         <br />
         <br />
         

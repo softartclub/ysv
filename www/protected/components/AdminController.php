@@ -56,13 +56,13 @@ class AdminController extends Controller
             'big' => array(
                 'width' => '350',
                 'height' => '350',
-                'watermarck' => '/img/watermark/big.png',
+                'watermark' => '/img/watermark/wm_350_350.png',
                 'path' => '/img/' . $this->imgDir . '/big/'
             ),
             'small' => array(
                 'width' => '150',
                 'height' => '150',
-                'watermarck' => '/img/watermark/small.png',
+                'watermark' => '/img/watermark/wm_150_150.png',
                 'path' => '/img/' . $this->imgDir . '/small/'
             )
         );
@@ -85,7 +85,7 @@ class AdminController extends Controller
               'users' => array('@'),
               ), */
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'postOnly + delete', 'create', 'update', 'index', 'view', 'dellpic', 'show', 'settings', 'moveNode', 'accessControl'),
+                'actions' => array('admin', 'delete', 'create', 'update', 'index', 'view', 'dellpic', 'show', 'settings', 'moveNode', 'accessControl'),
                 'users' => array('admin'),
             ),
             array('deny', // deny all users
@@ -115,6 +115,9 @@ class AdminController extends Controller
             $val = '';
             for ($i = 0; $i < $lft; $i++)
                 $val .= ' - ';
+            
+            if ($value['name'] == 'Vertical menu' || $value['name'] == 'Horisontal menu')
+                $value['name'] = Yii::t('form', $value['name']);
 
             $retArray[$value['id']] = $val . $value['name'];
         }
@@ -151,6 +154,42 @@ class AdminController extends Controller
         }
         return array();
     }
+    
+    protected function _deletePic($pic) {
+    
+        if (is_file(Yii::app()->params->webroot.$this->img['big']['path'].$pic)) {
+            @unlink(Yii::app()->params->webroot.$this->img['big']['path'].$pic);
+        }
+        
+        if (is_file(Yii::app()->params->webroot.$this->img['small']['path'].$pic)) {
+            @unlink(Yii::app()->params->webroot.$this->img['small']['path'].$pic);
+        }
+    }
+
+
+    protected function _savePic($model)
+    {
+        $pic = CUploadedFile::getInstance($model, 'pic');
+
+        if ($pic) {
+
+            $CUploadedFileResize = new CUploadedFileResize($pic);
+            $CUploadedFileResize->width = $this->img['big']['width'];
+            $CUploadedFileResize->height = $this->img['big']['height'];
+            $CUploadedFileResize->watermark = $this->img['big']['watermark'];
+            $CUploadedFileResize->saveResize($this->img['big']['path'] . $pic->getName());
+
+
+            $CUploadedFileResize = new CUploadedFileResize($pic);
+            $CUploadedFileResize->width = $this->img['small']['width'];
+            $CUploadedFileResize->height = $this->img['small']['height'];
+            $CUploadedFileResize->watermark = $this->img['small']['watermark'];
+            $CUploadedFileResize->saveResize($this->img['small']['path'] . $pic->getName());
+
+            $model->pic = $pic->getName();
+        }
+    }
+
 
 }
 

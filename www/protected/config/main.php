@@ -22,6 +22,8 @@ return array(
         
         
     ),
+  
+    
     'modules' => array(
         // uncomment the following to enable the Gii tool
         'admin',
@@ -34,6 +36,16 @@ return array(
     ),
     // application components
     'components' => array(
+          'clientScript' => array(
+            'scriptMap' => array(
+                'jquery.js' => '/js/jquery-1.9.1.js',
+                'jquery.min.js' => '/js/jquery-1.9.1.min.js',
+             
+                'jquery-ui.min.js' => '/js/jquery-ui-1.10.2.custom.min',
+                'jquery-ui.min.css' => '/js/jquery-ui-1.10.2.custom/css/redmond/jquery-ui-1.10.2.custom.min.css',
+            )
+           
+        ),
         'init' => array(
             'class' => 'application.components.Init'
         ),
@@ -54,6 +66,7 @@ return array(
                 'admin/login'=>'admin/default/login',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                'sitemap' => 'site/sitemap',
                 'page/' => 'page/index',
                // 'page/<url:[a-zA-Z0-9-]+>/page/<page>' => 'page/view',
                 'page/<url:[a-zA-Z0-9-]+>' => 'pages/view',
@@ -102,7 +115,9 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'adminEmail' => 'webmaster@example.com',
-        'webroot'=>$_SERVER['DOCUMENT_ROOT']
+        'adminEmail' => 'softartclub@gmail.com',
+        'webroot'=>$_SERVER['DOCUMENT_ROOT'],
+        'version'=>array('core'=>'alpha 1.0.1')
+            
     ),
 );

@@ -2,7 +2,7 @@
 
 class NewsController extends AdminController
 {
-	
+
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -33,7 +33,6 @@ class NewsController extends AdminController
         // $this->performAjaxValidation($model);
         $tree = new Tree();
 
-
         if (isset($_POST['News'])) {
 
             try {
@@ -46,28 +45,7 @@ class NewsController extends AdminController
 
             if ($model->validate()) {
 
-                $pic = CUploadedFile::getInstance($model, 'pic');
-               
-                if (empty($extension)) {
-                    $extension = 'jpg';
-                }
-
-                if ($pic) {
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['big']['width'];
-                    $CUploadedFileResize->height = $this->img['big']['height'];
-                    $CUploadedFileResize->saveResize($this->img['big']['path'] . $pic->getName() );
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['small']['width'];
-                    $CUploadedFileResize->height = $this->img['small']['height'];
-                    $CUploadedFileResize->saveResize($this->img['small']['path'] . $pic->getName());
-
-                    $model->pic = $pic->getName();
-                }
-
-
+                $this->_savePic($model);
 
                 if (News::model()->exists('url=:url', array(':url' => $model->attributes['url'])))
                     throw new CHttpException(Yii::t('message', 'Url {url} already exists', array('{url}' => $model->attributes['url'])));
@@ -80,7 +58,7 @@ class NewsController extends AdminController
 
 
 
-                if (is_numeric($_POST['Tree']['tree']) && $_POST['Tree']['tree'] != '0') {
+                if (isset($_POST['Tree']['tree']) && is_numeric($_POST['Tree']['tree']) && $_POST['Tree']['tree'] != '0') {
 
                     $parentMenu = Tree::model()->findByPk($_POST['Tree']['tree']);
                     $tree->name = $model->attributes['name'];
@@ -118,12 +96,6 @@ class NewsController extends AdminController
     {
         $model = $this->loadModel($id);
         $activeElement = Tree::model()->find('pageId=:pageId', array(':pageId' => $model->id));
-        $isElementExists = true;
-        if (!$activeElement) {
-            $activeElement = Tree::model();
-            $isElementExists = false;
-        }
-
 
         if (isset($_POST['News'])) {
 
@@ -139,22 +111,7 @@ class NewsController extends AdminController
 
             if ($model->validate()) {
 
-                $pic = CUploadedFile::getInstance($model, 'pic');
-
-                if ($pic) {
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['big']['width'];
-                    $CUploadedFileResize->height = $this->img['big']['height'];
-                    $CUploadedFileResize->saveResize($this->img['big']['path'] . $pic->getName());
-
-                    $CUploadedFileResize = new CUploadedFileResize($pic);
-                    $CUploadedFileResize->width = $this->img['small']['width'];
-                    $CUploadedFileResize->height = $this->img['small']['height'];
-                    $CUploadedFileResize->saveResize($this->img['small']['path'] . $pic->getName());
-
-                    $model->pic = $pic->getName();
-                }
+                $this->_savePic($model);
 
                 try {
                     $model->save();
@@ -162,13 +119,15 @@ class NewsController extends AdminController
                     throw new CHttpException($e->getMessage());
                 }
 
-                if (is_numeric($_POST['Tree']['tree'])) {
+                if (isset($_POST['Tree']['tree']) && is_numeric($_POST['Tree']['tree'])) {
                     if ($_POST['Tree']['tree'] != '0') {
                         try {
                             $selectedElement = Tree::model()->findByPk($_POST['Tree']['tree']);
                         } catch (Exception $e) {
                             throw new CHttpException($e->getMessage());
                         }
+
+                        $isElementExists = $selectedElement->children()->exists('name=:name', array(':name' => $model->name));
 
                         try {
                             if ($isElementExists) {
@@ -191,6 +150,8 @@ class NewsController extends AdminController
                                 $tree->name = $model->attributes['name'];
                                 $tree->pageId = $model->id;
                                 $tree->url = $model->attributes['url'];
+                                $tree->controller = 'news';
+                                $tree->tableName = 'news';
                                 try {
                                     $tree->appendTo($selectedElement);
                                 } catch (Exception $e) {
@@ -218,7 +179,7 @@ class NewsController extends AdminController
 
         $this->render('update', array(
             'model' => $model,
-            'tree' => $activeElement,
+            'tree' => Tree::model(),
             'treeSelected' => $this->_menuSelected($model->id, 'news'),
             'treeList' => $this->_menuList(),
             'img' => $this->img
@@ -232,7 +193,13 @@ class NewsController extends AdminController
      */
     public function actionDelete($id)
     {
-        $this->loadModel($id)->delete();
+        $model = $this->loadModel($id);
+        $tree = Tree::model()->find('pageId=:pageId', array(':pageId' => $model->id));
+        if ($tree)
+            $tree->deleteNode();
+        
+        $this->_deletePic($model->pic);
+        $model->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))

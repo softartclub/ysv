@@ -19,16 +19,9 @@
 
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/mbmenu.css" />
         <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->theme->baseUrl; ?>/css/mbmenu_iestyles.css" />
-
-        <link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.1.custom/css/redmond/jquery-ui-1.10.1.custom.min.css" />
-
-       
-
+        
         <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-         <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.2.custom/js/jquery-1.9.1.js"></script>
-        <script type="text/javascript" src="<?php echo Yii::app()->theme->baseUrl; ?>/js/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
-
-       
+        
     </head>
    
     <body>

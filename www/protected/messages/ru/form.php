@@ -8,7 +8,7 @@ return array(
     'Description'=>'Мета тег Description',
     'Date'=>'Дата',
     'Preview'=>'Краткая информация',
-    'Body'=>'Подпробная информация',
+    'Body'=>'Подробная информация',
     'isMainPage'=>'Сохранить статью как главную',
     'Level'=>'Позиция в меню',
     'Menu is empty' =>'В меню нет данных',
@@ -44,6 +44,17 @@ return array(
     "Update Pages"=>"Редактировании стати",
     "Save"=>"Сохранить",
     "Create"=>"Создать",
-    
+    "Your Name"=>"Ваше имя",    
+    "Your E-mail"=>"Ваш E-mail",    
+    "Subject"=>"Тема",    
+    "Body"=>"Текст",    
+    "Verification Code"=>"Код на картинке",   
+    "Please enter the letters as they are shown in the image above."=>"Пожалуйста, введите буквы, показанные на картинке выше.",
+    "Letters are not case-sensitive."=>"Буквы вводятся без учета регистра.",
+    "Submit"=>"Отправить",
+    "Fields with"=>"Поля с",
+    "are required"=>"обязательны для заполнения",
+    "If you have business inquiries or other questions, please fill out the following form to contact us. Thank you."=>"Если у вас есть бизнес-запросы или другие вопросы, пожалуйста, заполните следующую форму, чтобы связаться с нами. Спасибо.",
+    "Contact Us"=>"Связаться с Нами"
     
 );
